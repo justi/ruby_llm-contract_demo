@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "kb"
+require_relative "source"
 require_relative "faq_step"
 require_relative "faq_step_v2_proposed"
 require_relative "faithfulness_judge_v2"
@@ -14,12 +14,12 @@ EVAL_NAME = "faithfulness"
 # `parsed_output`. The judge's own status is the source of truth.
 def install_faithfulness_eval(klass)
   klass.define_eval(EVAL_NAME) do
-    Kb.golden_questions.each_with_index do |question, i|
+    Source.golden_questions.each_with_index do |question, i|
       add_case "case_#{i + 1}",
                input: question,
                evaluator: ->(output, _input) {
                  verdict = FaithfulnessJudgeV2.run(
-                   { source: Kb.policy, answer: output[:answer] }
+                   { source: Source.policy, answer: output[:answer] }
                  )
                  next 0.0 unless verdict.ok?
 

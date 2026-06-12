@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "kb"
+require_relative "source"
 
 # Four adversarial archetypes of customer questions, drawn from real
-# customer-support logs. Dual-language; respects DEMO_LANG just like Kb.
+# customer-support logs. Dual-language; respects DEMO_LANG just like Source.
 module Adversarial
   CASES = {
     pl: [
@@ -45,6 +45,6 @@ module Adversarial
   }.freeze
 
   def self.cases
-    CASES[Kb.lang]
+    CASES[Source.lang]
   end
 end

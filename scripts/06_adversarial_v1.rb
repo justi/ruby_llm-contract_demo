@@ -6,7 +6,7 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"
-require "kb"
+require "source"
 require "faq_step"
 require "faithfulness_judge_v2"
 require "adversarial"
@@ -30,7 +30,7 @@ Adversarial.cases.each_with_index do |adv, i|
   puts "  #{answer}"
   puts ""
 
-  judge = FaithfulnessJudgeV2.run({ source: Kb.policy, answer: answer })
+  judge = FaithfulnessJudgeV2.run({ source: Source.policy, answer: answer })
   unless judge.ok?
     puts "  judge status: #{judge.status}"
     next

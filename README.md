@@ -8,7 +8,7 @@ Companion to the article: *Twoje testy LLM kłamią. Oto patch.* (PL, link TBD a
 
 A customer-support FAQ ships with a JSON schema, two or three validates, a length cap. Everything green. Schema checks shape, not meaning.
 
-**Company policy (`Kb::POLICY`):**
+**Company policy (`Source::POLICY`):**
 
 ```text
 The customer may return a package within 14 days of the delivery date.
@@ -87,18 +87,18 @@ The scripts walk the v1 → v2 → v3 → v4 progression with a judge gate betwe
 | `07_adversarial_v2.rb` | v2 PR + adversarial - shows a *concrete* lawsuit-bait output |
 | `08_adversarial_v3.rb` | v3 + adversarial - 3/4 PASS, 1 leak (constructed meta-rule) |
 | `09_iterate_v4.rb` | v4 prompt (meta-rule ban) + adversarial + golden regression → 4/4 + 5/5 |
-| `10_extended_policy.rb` | Alternative path: extend `Kb::POLICY` instead of iterating the prompt |
+| `10_extended_policy.rb` | Alternative path: extend `Source::POLICY` instead of iterating the prompt |
 
 ## Files
 
 ```
 lib/
-  kb.rb                          # POLICY + GOLDEN_QUESTIONS (dual PL/EN, picked by LANG)
-  kb_extended.rb                 # extended policy (alternative source-of-truth path)
+  source.rb                      # POLICY + GOLDEN_QUESTIONS (dual PL/EN, picked by DEMO_LANG)
+  source_extended.rb             # extended policy (alternative source-of-truth path)
   faq_step.rb                    # v1 - strict baseline
   faq_step_v2_proposed.rb        # v2 - "be warm" PR (drift)
   faq_step_v3_iterated.rb        # v3 - after judge feedback
-  faq_step_v3_extended.rb        # v3 prompt + KbExtended (experiment in 10_extended_policy.rb)
+  faq_step_v3_extended.rb        # v3 prompt + SourceExtended (experiment in 10_extended_policy.rb)
   faq_step_v4_iterated.rb        # v4 - meta-rule ban
   faithfulness_judge.rb          # raw judge (over-eager)
   faithfulness_judge_v2.rb       # refined judge (separates politeness from commitment)
@@ -110,6 +110,39 @@ scripts/
 spec/
   faithfulness_gate_spec.rb       # the CI gate (live - see file header)
 ```
+
+## Why all the versions?
+
+This is a **tutorial demo**, not a template. Every `faq_step_v*.rb` and both judges ship side-by-side because the article's lesson is the **diff** between them - drift, calibration, iteration. You cannot show "judge over-flags v2 but cleared v3" without keeping both v2 and v3 in the tree.
+
+| File | Story role |
+|---|---|
+| `faq_step.rb` (v1) | Production baseline - strict, robotic |
+| `faq_step_v2_proposed.rb` | "Be warm" PR that drifts into out-of-policy promises |
+| `faq_step_v3_iterated.rb` | Fix after refined-judge feedback |
+| `faq_step_v4_iterated.rb` | Final - meta-rule ban after adversarial finds |
+| `faq_step_v3_extended.rb` | Alternative: same v3 prompt, richer source policy |
+| `faithfulness_judge.rb` | Raw judge - over-eager, motivating calibration |
+| `faithfulness_judge_v2.rb` | Refined judge - distinguishes courtesy from commitment |
+
+The numbered `scripts/01..10` are tutorial chapters, not a single entry point. You can re-run any one of them in isolation - they're independent.
+
+## Adapting for your production app
+
+If you just want the **final pattern** in your own app, you don't need the v1/v2/v3 history or the raw judge. Copy the two final files:
+
+```bash
+cp lib/faq_step_v4_iterated.rb       your_app/contracts/your_step.rb
+cp lib/faithfulness_judge_v2.rb      your_app/contracts/your_judge.rb
+```
+
+Then:
+
+1. Replace `Source.policy` and `Source.golden_questions` with your own source of truth (a constant, a DB row, a file load).
+2. Replace the system prompt's domain language (this demo is a returns-policy chatbot).
+3. Wire the judge as `evaluator:` in your own `define_eval` (see `lib/evals.rb` for the pattern).
+
+The other files (`faq_step.rb` v1, `faq_step_v2_proposed.rb`, `faithfulness_judge.rb` raw, all adversarial scripts, lifecycle scripts 01-10) are **teaching artifacts** - you don't need them in production. They exist so the demo can show the *path* to v4, not just hand v4 over.
 
 ## Why this isn't a strawman
 

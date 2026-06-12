@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "ruby_llm/contract"
-require_relative "kb"
+require_relative "source"
 
 # v3 — iteration after feedback from the refined judge.
 # Keeps the warmth, adds an explicit ban on promising outside the policy.
@@ -63,7 +63,7 @@ class FaqStepV3Iterated < RubyLLM::Contract::Step::Base
   max_cost 0.005
 
   prompt do
-    system format(SYSTEM_PROMPTS[Kb.lang], policy: Kb.policy)
+    system format(SYSTEM_PROMPTS[Source.lang], policy: Source.policy)
     user "{input}"
   end
 

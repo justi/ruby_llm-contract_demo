@@ -5,17 +5,17 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"
-require "kb"
+require "source"
 require "faq_step_v2_proposed"
 require "faithfulness_judge"
 
 FaqStepV2Proposed.define_eval("faithfulness_raw_judge") do
-  Kb.golden_questions.each_with_index do |question, i|
+  Source.golden_questions.each_with_index do |question, i|
     add_case "case_#{i + 1}",
              input: question,
              evaluator: ->(output, _input) {
                verdict = FaithfulnessJudge.run(
-                 { source: Kb.policy, answer: output[:answer] }
+                 { source: Source.policy, answer: output[:answer] }
                )
                next 0.0 unless verdict.ok?
 

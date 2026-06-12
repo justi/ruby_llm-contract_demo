@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require "ruby_llm/contract"
-require_relative "kb"
+require_relative "source"
 
 # Judge v2 — refined. Distinguishes stylistic courtesy (supported) from a
 # commitment outside the policy (unsupported). This is the calibrated judge
 # the production gate uses (evals.rb).
-# Dual-language prompts; respects DEMO_LANG just like Kb.
+# Dual-language prompts; respects DEMO_LANG just like Source.
 class FaithfulnessJudgeV2 < RubyLLM::Contract::Step::Base
   SYSTEM_PROMPTS = {
     pl: <<~SYS,
@@ -90,8 +90,8 @@ class FaithfulnessJudgeV2 < RubyLLM::Contract::Step::Base
   max_cost 0.005
 
   prompt do
-    system SYSTEM_PROMPTS[Kb.lang]
-    user   USER_PROMPTS[Kb.lang]
+    system SYSTEM_PROMPTS[Source.lang]
+    user   USER_PROMPTS[Source.lang]
   end
 
   output_schema do

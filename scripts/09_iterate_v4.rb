@@ -6,7 +6,7 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"
-require "kb"
+require "source"
 require "faq_step_v4_iterated"
 require "faithfulness_judge_v2"
 require "adversarial"
@@ -22,7 +22,7 @@ Adversarial.cases.each_with_index do |adv, i|
   next unless result.ok?
 
   answer = result.parsed_output[:answer]
-  judge = FaithfulnessJudgeV2.run({ source: Kb.policy, answer: answer })
+  judge = FaithfulnessJudgeV2.run({ source: Source.policy, answer: answer })
   next unless judge.ok?
 
   verdict = judge.parsed_output[:verdict]
@@ -44,12 +44,12 @@ puts "═" * 76
 puts ""
 
 FaqStepV4Iterated.define_eval("faithfulness") do
-  Kb.golden_questions.each_with_index do |question, i|
+  Source.golden_questions.each_with_index do |question, i|
     add_case "case_#{i + 1}",
              input: question,
              evaluator: ->(output, _input) {
                verdict = FaithfulnessJudgeV2.run(
-                 { source: Kb.policy, answer: output[:answer] }
+                 { source: Source.policy, answer: output[:answer] }
                )
                next 0.0 unless verdict.ok?
 

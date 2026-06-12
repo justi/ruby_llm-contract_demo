@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require "ruby_llm/contract"
-require_relative "kb"
-require_relative "kb_extended"
+require_relative "source"
+require_relative "source_extended"
 
-# v3 prompt (unchanged) + extended policy (KbExtended). Shows that a richer
+# v3 prompt (unchanged) + extended policy (SourceExtended). Shows that a richer
 # source of truth reduces drift without iterating the prompt itself.
 # Article section 6d.
 class FaqStepV3Extended < RubyLLM::Contract::Step::Base
@@ -51,7 +51,7 @@ class FaqStepV3Extended < RubyLLM::Contract::Step::Base
   max_cost 0.005
 
   prompt do
-    system format(SYSTEM_PROMPTS[Kb.lang], policy: KbExtended.policy)
+    system format(SYSTEM_PROMPTS[Source.lang], policy: SourceExtended.policy)
     user "{input}"
   end
 
