@@ -1,0 +1,10 @@
+/.bundle/
+/vendor/bundle
+*.gem
+.env
+.DS_Store
+
+# Author-only files (not part of public demo)
+article.md
+article_plan.md
+.claude/
