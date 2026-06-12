@@ -10,12 +10,12 @@ require "faq_step_v3_iterated"
 require "faithfulness_judge_v2"
 
 FaqStepV3Iterated.define_eval("faithfulness") do
-  Kb::GOLDEN_QUESTIONS.each_with_index do |question, i|
+  Kb.golden_questions.each_with_index do |question, i|
     add_case "case_#{i + 1}",
              input: question,
              evaluator: ->(output, _input) {
                verdict = FaithfulnessJudgeV2.run(
-                 { source: Kb::POLICY, answer: output[:answer] }
+                 { source: Kb.policy, answer: output[:answer] }
                )
                next 0.0 unless verdict.ok?
 

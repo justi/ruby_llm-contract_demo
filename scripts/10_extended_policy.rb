@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 # Alternative to iterating the prompt: extend the source of truth. Same v3
-# prompt, but it now reads KbExtended::POLICY (which states the facts about
+# prompt, but it now reads KbExtended.policy (which states the facts about
 # discounts, exceptions, and equal treatment). Article section 6d.
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
@@ -17,12 +17,12 @@ puts "═" * 76
 puts ""
 
 adv_pass = 0
-Adversarial::CASES.each_with_index do |adv, i|
+Adversarial.cases.each_with_index do |adv, i|
   result = FaqStepV3Extended.run(adv[:question])
   next unless result.ok?
 
   answer = result.parsed_output[:answer]
-  judge = FaithfulnessJudgeV2.run({ source: KbExtended::POLICY, answer: answer })
+  judge = FaithfulnessJudgeV2.run({ source: KbExtended.policy, answer: answer })
   next unless judge.ok?
 
   verdict = judge.parsed_output[:verdict]
@@ -34,7 +34,7 @@ Adversarial::CASES.each_with_index do |adv, i|
   puts "  reason: #{judge.parsed_output[:reason]}" if verdict == "fail"
   puts ""
 end
-puts "Adversarial: #{adv_pass}/#{Adversarial::CASES.length} PASS"
+puts "Adversarial: #{adv_pass}/#{Adversarial.cases.length} PASS"
 puts ""
 
 puts "═" * 76
@@ -43,12 +43,12 @@ puts "═" * 76
 puts ""
 
 FaqStepV3Extended.define_eval("faithfulness_extended") do
-  KbExtended::GOLDEN_QUESTIONS.each_with_index do |question, i|
+  KbExtended.golden_questions.each_with_index do |question, i|
     add_case "case_#{i + 1}",
              input: question,
              evaluator: ->(output, _input) {
                verdict = FaithfulnessJudgeV2.run(
-                 { source: KbExtended::POLICY, answer: output[:answer] }
+                 { source: KbExtended.policy, answer: output[:answer] }
                )
                next 0.0 unless verdict.ok?
 

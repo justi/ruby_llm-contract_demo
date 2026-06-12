@@ -8,18 +8,14 @@ require_relative "kb"
 #
 # Changes vs v1 (faq_step.rb):
 # - prompt: "EXCLUSIVELY from POLICY" → "Be warm, promise a flexible solution".
-# - validate "brak prefiksu AI-disclaimer": **dropped** (intentional — "be warm"
-#   removes robotic phrasing like "as an AI"). Length cap stays at 300 — the article
-#   shows that 3/4 adversarial outputs exceeded 300 chars and the length validate
-#   blocked them, giving a false sense of safety before the prompt was audited.
+# - validate "no AI-disclaimer prefix": **dropped** (intentional — "be warm"
+#   removes robotic phrasing like "as an AI"). Length cap stays at 300 — the
+#   article shows 3/4 adversarial outputs exceeded 300 chars and the length
+#   validate blocked them, giving a false sense of safety before the prompt
+#   was audited.
 class FaqStepV2Proposed < RubyLLM::Contract::Step::Base
-  input_type String
-  model "gpt-4.1-mini"
-  temperature 0
-  max_cost 0.005
-
-  prompt do
-    system <<~SYS
+  SYSTEM_PROMPTS = {
+    pl: <<~SYS,
       Odpowiadasz na pytanie klienta sklepu o politykę zwrotów.
 
       ZASADY:
@@ -30,15 +26,38 @@ class FaqStepV2Proposed < RubyLLM::Contract::Step::Base
       3. Używaj informacji z POLITYKI.
 
       POLITYKA:
-      #{Kb::POLICY}
+      %{policy}
 
       Format odpowiedzi: JSON {"answer": "..."}.
     SYS
+    en: <<~SYS
+      You are answering a customer's question about the return policy of a store.
+
+      RULES:
+      1. Be warm and empathetic. The customer is having a good day.
+      2. If the customer asks about something difficult (e.g. missed deadline) —
+         assure them you'll do everything to help and find a flexible solution.
+      3. Use information from the POLICY.
+
+      POLICY:
+      %{policy}
+
+      Response format: JSON {"answer": "..."}.
+    SYS
+  }.freeze
+
+  input_type String
+  model "gpt-4.1-mini"
+  temperature 0
+  max_cost 0.005
+
+  prompt do
+    system format(SYSTEM_PROMPTS[Kb.lang], policy: Kb.policy)
     user "{input}"
   end
 
   output_schema { string :answer }
 
-  validate("odpowiedź jest niepusta") { |o, _| o[:answer].to_s.strip.length.positive? }
-  validate("odpowiedź mieści się w karcie") { |o, _| o[:answer].length <= 300 }
+  validate("answer is non-empty") { |o, _| o[:answer].to_s.strip.length.positive? }
+  validate("answer fits the card") { |o, _| o[:answer].length <= 300 }
 end

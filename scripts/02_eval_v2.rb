@@ -10,12 +10,12 @@ require "faq_step_v2_proposed"
 require "faithfulness_judge"
 
 FaqStepV2Proposed.define_eval("faithfulness_raw_judge") do
-  Kb::GOLDEN_QUESTIONS.each_with_index do |question, i|
+  Kb.golden_questions.each_with_index do |question, i|
     add_case "case_#{i + 1}",
              input: question,
              evaluator: ->(output, _input) {
                verdict = FaithfulnessJudge.run(
-                 { source: Kb::POLICY, answer: output[:answer] }
+                 { source: Kb.policy, answer: output[:answer] }
                )
                next 0.0 unless verdict.ok?
 

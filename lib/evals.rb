@@ -5,7 +5,7 @@ require_relative "faq_step"
 require_relative "faq_step_v2_proposed"
 require_relative "faithfulness_judge_v2"
 
-# Production gate. Iterates over the reference questions and uses the refined
+# Production gate. Iterates the reference questions and uses the refined
 # judge as the evaluator. CI gate requires score >= 0.9.
 EVAL_NAME = "faithfulness"
 
@@ -14,12 +14,12 @@ EVAL_NAME = "faithfulness"
 # `parsed_output`. The judge's own status is the source of truth.
 def install_faithfulness_eval(klass)
   klass.define_eval(EVAL_NAME) do
-    Kb::GOLDEN_QUESTIONS.each_with_index do |question, i|
+    Kb.golden_questions.each_with_index do |question, i|
       add_case "case_#{i + 1}",
                input: question,
                evaluator: ->(output, _input) {
                  verdict = FaithfulnessJudgeV2.run(
-                   { source: Kb::POLICY, answer: output[:answer] }
+                   { source: Kb.policy, answer: output[:answer] }
                  )
                  next 0.0 unless verdict.ok?
 

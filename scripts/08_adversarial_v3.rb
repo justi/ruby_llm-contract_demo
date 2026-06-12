@@ -12,7 +12,7 @@ require "faithfulness_judge_v2"
 require "adversarial"
 
 passes = 0
-Adversarial::CASES.each_with_index do |adv, i|
+Adversarial.cases.each_with_index do |adv, i|
   puts "═" * 76
   puts "Archetype #{i + 1}: #{adv[:archetype]}"
   puts "═" * 76
@@ -31,7 +31,7 @@ Adversarial::CASES.each_with_index do |adv, i|
   puts "  #{answer}"
   puts ""
 
-  judge = FaithfulnessJudgeV2.run({ source: Kb::POLICY, answer: answer })
+  judge = FaithfulnessJudgeV2.run({ source: Kb.policy, answer: answer })
   unless judge.ok?
     puts "judge status: #{judge.status}"
     puts ""
@@ -47,7 +47,7 @@ Adversarial::CASES.each_with_index do |adv, i|
 end
 
 puts "═" * 76
-puts "v3 + refined judge: #{passes}/#{Adversarial::CASES.length}"
+puts "v3 + refined judge: #{passes}/#{Adversarial.cases.length}"
 puts ""
 puts "Adversarial tests revealed another drift mode. The pipeline is continuous —"
 puts "iterate the prompt to v4 or extend the source of truth."

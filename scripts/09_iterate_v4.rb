@@ -17,12 +17,12 @@ puts "═" * 76
 puts ""
 
 adv_pass = 0
-Adversarial::CASES.each_with_index do |adv, i|
+Adversarial.cases.each_with_index do |adv, i|
   result = FaqStepV4Iterated.run(adv[:question])
   next unless result.ok?
 
   answer = result.parsed_output[:answer]
-  judge = FaithfulnessJudgeV2.run({ source: Kb::POLICY, answer: answer })
+  judge = FaithfulnessJudgeV2.run({ source: Kb.policy, answer: answer })
   next unless judge.ok?
 
   verdict = judge.parsed_output[:verdict]
@@ -35,7 +35,7 @@ Adversarial::CASES.each_with_index do |adv, i|
   puts ""
 end
 
-puts "Adversarial: #{adv_pass}/#{Adversarial::CASES.length} PASS"
+puts "Adversarial: #{adv_pass}/#{Adversarial.cases.length} PASS"
 puts ""
 
 puts "═" * 76
@@ -44,12 +44,12 @@ puts "═" * 76
 puts ""
 
 FaqStepV4Iterated.define_eval("faithfulness") do
-  Kb::GOLDEN_QUESTIONS.each_with_index do |question, i|
+  Kb.golden_questions.each_with_index do |question, i|
     add_case "case_#{i + 1}",
              input: question,
              evaluator: ->(output, _input) {
                verdict = FaithfulnessJudgeV2.run(
-                 { source: Kb::POLICY, answer: output[:answer] }
+                 { source: Kb.policy, answer: output[:answer] }
                )
                next 0.0 unless verdict.ok?
 
@@ -68,5 +68,5 @@ puts "Reference: score #{report.score} (#{report.passed? ? 'PASS' : 'FAIL'})"
 puts ""
 
 puts "═" * 76
-puts "v4 cycle:  adversarial #{adv_pass}/#{Adversarial::CASES.length}, reference #{report.score}"
+puts "v4 cycle:  adversarial #{adv_pass}/#{Adversarial.cases.length}, reference #{report.score}"
 puts "═" * 76

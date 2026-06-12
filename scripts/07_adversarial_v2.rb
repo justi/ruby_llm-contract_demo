@@ -11,7 +11,7 @@ require "faq_step_v2_proposed"
 require "faithfulness_judge"
 require "adversarial"
 
-Adversarial::CASES.each_with_index do |adv, i|
+Adversarial.cases.each_with_index do |adv, i|
   puts "═" * 76
   puts "Archetype #{i + 1}: #{adv[:archetype]}"
   puts "═" * 76
@@ -30,7 +30,7 @@ Adversarial::CASES.each_with_index do |adv, i|
   puts "  #{answer}"
   puts ""
 
-  judge = FaithfulnessJudge.run({ source: Kb::POLICY, answer: answer })
+  judge = FaithfulnessJudge.run({ source: Kb.policy, answer: answer })
   unless judge.ok?
     puts "judge status: #{judge.status}"
     puts ""

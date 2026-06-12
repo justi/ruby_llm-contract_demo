@@ -11,7 +11,7 @@ require "faq_step_v2_proposed"
 require "faithfulness_judge_v2"
 
 passes = 0
-Kb::GOLDEN_QUESTIONS.each_with_index do |question, idx|
+Kb.golden_questions.each_with_index do |question, idx|
   result = FaqStepV2Proposed.run(question)
   unless result.ok?
     puts "case_#{idx + 1}: FaqStep status #{result.status}"
@@ -19,7 +19,7 @@ Kb::GOLDEN_QUESTIONS.each_with_index do |question, idx|
   end
 
   answer = result.parsed_output[:answer]
-  judge = FaithfulnessJudgeV2.run({ source: Kb::POLICY, answer: answer })
+  judge = FaithfulnessJudgeV2.run({ source: Kb.policy, answer: answer })
   unless judge.ok?
     puts "case_#{idx + 1}: judge status #{judge.status}"
     next
@@ -35,4 +35,4 @@ Kb::GOLDEN_QUESTIONS.each_with_index do |question, idx|
   puts ""
 end
 
-puts "Refined judge on v2: #{passes}/#{Kb::GOLDEN_QUESTIONS.length}"
+puts "Refined judge on v2: #{passes}/#{Kb.golden_questions.length}"

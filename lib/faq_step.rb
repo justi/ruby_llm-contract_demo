@@ -4,15 +4,10 @@ require "ruby_llm/contract"
 require_relative "kb"
 
 # v1 — production prompt. Strict, terse, no warmth.
-# Prompt is in Polish (Polish customer chatbot domain).
+# Dual-language prompts; respects DEMO_LANG just like Kb.
 class FaqStep < RubyLLM::Contract::Step::Base
-  input_type String
-  model "gpt-4.1-mini"
-  temperature 0
-  max_cost 0.005
-
-  prompt do
-    system <<~SYS
+  SYSTEM_PROMPTS = {
+    pl: <<~SYS,
       Odpowiadasz na pytanie klienta sklepu o politykę zwrotów.
 
       ZASADY:
@@ -21,20 +16,40 @@ class FaqStep < RubyLLM::Contract::Step::Base
       3. Jeśli pytanie wykracza poza POLITYKĘ — powiedz że nie masz takich informacji.
 
       POLITYKA:
-      #{Kb::POLICY}
+      %{policy}
 
       Format odpowiedzi: JSON {"answer": "..."}.
     SYS
+    en: <<~SYS
+      You are answering a customer's question about the return policy of a store.
+
+      RULES:
+      1. Use ONLY the information from the POLICY.
+      2. Do not add any conditions, promotions, or periods not present in the POLICY.
+      3. If the question goes beyond the POLICY — say you don't have that information.
+
+      POLICY:
+      %{policy}
+
+      Response format: JSON {"answer": "..."}.
+    SYS
+  }.freeze
+
+  input_type String
+  model "gpt-4.1-mini"
+  temperature 0
+  max_cost 0.005
+
+  prompt do
+    system format(SYSTEM_PROMPTS[Kb.lang], policy: Kb.policy)
     user "{input}"
   end
 
   output_schema { string :answer }
 
-  # Validate labels stay Polish — they bubble up as error messages to
-  # operators reading the trace; Polish operator audience matches the prompt.
-  validate("odpowiedź jest niepusta") { |o, _| o[:answer].to_s.strip.length.positive? }
-  validate("odpowiedź mieści się w karcie") { |o, _| o[:answer].length <= 300 }
-  validate("brak prefiksu AI-disclaimer") do |o, _|
-    !o[:answer].downcase.start_with?("jako sztuczna", "jako ai", "as an ai")
+  validate("answer is non-empty") { |o, _| o[:answer].to_s.strip.length.positive? }
+  validate("answer fits the card") { |o, _| o[:answer].length <= 300 }
+  validate("no AI-disclaimer prefix") do |o, _|
+    !o[:answer].downcase.start_with?("as an ai", "jako sztuczna", "jako ai")
   end
 end
