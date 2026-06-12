@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require "ruby_llm/contract"
-require_relative "source"
+require_relative "kb"
 
 # v1 — production prompt. Strict, terse, no warmth.
-# Dual-language prompts; respects DEMO_LANG just like Source.
+# Dual-language prompts; respects DEMO_LANG just like Kb.
 class FaqStep < RubyLLM::Contract::Step::Base
   SYSTEM_PROMPTS = {
     pl: <<~SYS,
@@ -41,7 +41,7 @@ class FaqStep < RubyLLM::Contract::Step::Base
   max_cost 0.005
 
   prompt do
-    system format(SYSTEM_PROMPTS[Source.lang], policy: Source.policy)
+    system format(SYSTEM_PROMPTS[Kb.lang], policy: Kb.policy)
     user "{input}"
   end
 

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require_relative "source"
+require_relative "kb"
 
 # Extended policy — adds explicit rules about discounts, exceptions, and
 # equal treatment. A legal + product decision made once, not per PR.
 # Article section 6d: extending the source vs iterating the prompt.
-# Dual-language; respects DEMO_LANG just like Source.
-module SourceExtended
+# Dual-language; respects DEMO_LANG just like Kb.
+module KbExtended
   POLICY = {
     pl: <<~POL.strip,
       Klient może zwrócić paczkę w ciągu 14 dni od daty dostawy.
@@ -29,13 +29,13 @@ module SourceExtended
     POL
   }.freeze
 
-  GOLDEN_QUESTIONS = Source::GOLDEN_QUESTIONS
+  GOLDEN_QUESTIONS = Kb::GOLDEN_QUESTIONS
 
   def self.policy
-    POLICY[Source.lang]
+    POLICY[Kb.lang]
   end
 
   def self.golden_questions
-    Source.golden_questions
+    Kb.golden_questions
   end
 end

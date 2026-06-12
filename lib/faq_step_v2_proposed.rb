@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "ruby_llm/contract"
-require_relative "source"
+require_relative "kb"
 
 # v2 — PR opened after the product manager asked for warmer replies.
 # Good intentions, side effect: the model invents commitments outside policy.
@@ -52,7 +52,7 @@ class FaqStepV2Proposed < RubyLLM::Contract::Step::Base
   max_cost 0.005
 
   prompt do
-    system format(SYSTEM_PROMPTS[Source.lang], policy: Source.policy)
+    system format(SYSTEM_PROMPTS[Kb.lang], policy: Kb.policy)
     user "{input}"
   end
 

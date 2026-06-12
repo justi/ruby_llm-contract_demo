@@ -4,7 +4,7 @@
 # questions. Dual-language (PL/EN) — pick the language via the DEMO_LANG
 # env var (defaults to "en"). Code, comments, validate labels and CLI
 # output stay English regardless of DEMO_LANG; only the domain strings switch.
-module Source
+module Kb
   POLICY = {
     pl: "Klient może zwrócić paczkę w ciągu 14 dni od daty dostawy. " \
         "Po upływie tego terminu zwroty nie są przyjmowane.",

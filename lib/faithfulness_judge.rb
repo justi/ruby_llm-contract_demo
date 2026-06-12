@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require "ruby_llm/contract"
-require_relative "source"
+require_relative "kb"
 
 # Judge v1 — raw version. Tags every claim as supported/contradicted/unsupported.
 # Does not distinguish stylistic courtesy from a commitment → over-strict.
 # Narrative starting point: the judge itself needs to be calibrated.
-# Dual-language prompts; respects DEMO_LANG just like Source.
+# Dual-language prompts; respects DEMO_LANG just like Kb.
 class FaithfulnessJudge < RubyLLM::Contract::Step::Base
   SYSTEM_PROMPTS = {
     pl: <<~SYS,
@@ -48,8 +48,8 @@ class FaithfulnessJudge < RubyLLM::Contract::Step::Base
   max_cost 0.005
 
   prompt do
-    system SYSTEM_PROMPTS[Source.lang]
-    user   USER_PROMPTS[Source.lang]
+    system SYSTEM_PROMPTS[Kb.lang]
+    user   USER_PROMPTS[Kb.lang]
   end
 
   output_schema do

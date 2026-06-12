@@ -6,11 +6,11 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"
-require "source"
+require "kb"
 require "faq_step_v2_proposed"
 require "faithfulness_judge"
 
-Source.golden_questions.each_with_index do |question, idx|
+Kb.golden_questions.each_with_index do |question, idx|
   puts "═" * 76
   puts "case_#{idx + 1}  Q: #{question}"
   puts "═" * 76
@@ -27,7 +27,7 @@ Source.golden_questions.each_with_index do |question, idx|
   puts "  #{answer}"
   puts ""
 
-  judge_result = FaithfulnessJudge.run({ source: Source.policy, answer: answer })
+  judge_result = FaithfulnessJudge.run({ source: Kb.policy, answer: answer })
   unless judge_result.ok?
     puts "  Judge status: #{judge_result.status}, errors: #{judge_result.validation_errors}"
     puts ""

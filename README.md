@@ -8,7 +8,7 @@ Companion to the article: *Twoje testy LLM kłamią. Oto patch.* (PL, link TBD a
 
 A customer-support FAQ ships with a JSON schema, two or three validates, a length cap. Everything green. Schema checks shape, not meaning.
 
-**Company policy (`Source::POLICY`):**
+**Company policy (`Kb::POLICY`):**
 
 ```text
 The customer may return a package within 14 days of the delivery date.
@@ -87,18 +87,18 @@ The scripts walk the v1 → v2 → v3 → v4 progression with a judge gate betwe
 | `07_adversarial_v2.rb` | v2 PR + adversarial - shows a *concrete* lawsuit-bait output |
 | `08_adversarial_v3.rb` | v3 + adversarial - 3/4 PASS, 1 leak (constructed meta-rule) |
 | `09_iterate_v4.rb` | v4 prompt (meta-rule ban) + adversarial + golden regression → 4/4 + 5/5 |
-| `10_extended_policy.rb` | Alternative path: extend `Source::POLICY` instead of iterating the prompt |
+| `10_extended_policy.rb` | Alternative path: extend `Kb::POLICY` instead of iterating the prompt |
 
 ## Files
 
 ```
 lib/
-  source.rb                      # POLICY + GOLDEN_QUESTIONS (dual PL/EN, picked by DEMO_LANG)
-  source_extended.rb             # extended policy (alternative source-of-truth path)
+  kb.rb                          # POLICY + GOLDEN_QUESTIONS (dual PL/EN, picked by DEMO_LANG)
+  kb_extended.rb                 # extended policy (alternative source-of-truth path)
   faq_step.rb                    # v1 - strict baseline
   faq_step_v2_proposed.rb        # v2 - "be warm" PR (drift)
   faq_step_v3_iterated.rb        # v3 - after judge feedback
-  faq_step_v3_extended.rb        # v3 prompt + SourceExtended (experiment in 10_extended_policy.rb)
+  faq_step_v3_extended.rb        # v3 prompt + KbExtended (experiment in 10_extended_policy.rb)
   faq_step_v4_iterated.rb        # v4 - meta-rule ban
   faithfulness_judge.rb          # raw judge (over-eager)
   faithfulness_judge_v2.rb       # refined judge (separates politeness from commitment)
@@ -138,7 +138,7 @@ cp lib/faithfulness_judge_v2.rb      your_app/contracts/your_judge.rb
 
 Then:
 
-1. Replace `Source.policy` and `Source.golden_questions` with your own source of truth (a constant, a DB row, a file load).
+1. Replace `Kb.policy` and `Kb.golden_questions` with your own source of truth (a constant, a DB row, a file load).
 2. Replace the system prompt's domain language (this demo is a returns-policy chatbot).
 3. Wire the judge as `evaluator:` in your own `define_eval` (see `lib/evals.rb` for the pattern).
 

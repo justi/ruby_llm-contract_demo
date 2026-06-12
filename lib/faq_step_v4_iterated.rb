@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "ruby_llm/contract"
-require_relative "source"
+require_relative "kb"
 
 # v4 — iteration after the adversarial tests. Adds a ban on the model
 # constructing its own meta-justifications (e.g. "the policy is the same
@@ -73,7 +73,7 @@ class FaqStepV4Iterated < RubyLLM::Contract::Step::Base
   max_cost 0.005
 
   prompt do
-    system format(SYSTEM_PROMPTS[Source.lang], policy: Source.policy)
+    system format(SYSTEM_PROMPTS[Kb.lang], policy: Kb.policy)
     user "{input}"
   end
 

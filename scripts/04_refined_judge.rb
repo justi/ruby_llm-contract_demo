@@ -6,12 +6,12 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"
-require "source"
+require "kb"
 require "faq_step_v2_proposed"
 require "faithfulness_judge_v2"
 
 passes = 0
-Source.golden_questions.each_with_index do |question, idx|
+Kb.golden_questions.each_with_index do |question, idx|
   result = FaqStepV2Proposed.run(question)
   unless result.ok?
     puts "case_#{idx + 1}: FaqStep status #{result.status}"
@@ -19,7 +19,7 @@ Source.golden_questions.each_with_index do |question, idx|
   end
 
   answer = result.parsed_output[:answer]
-  judge = FaithfulnessJudgeV2.run({ source: Source.policy, answer: answer })
+  judge = FaithfulnessJudgeV2.run({ source: Kb.policy, answer: answer })
   unless judge.ok?
     puts "case_#{idx + 1}: judge status #{judge.status}"
     next
@@ -35,4 +35,4 @@ Source.golden_questions.each_with_index do |question, idx|
   puts ""
 end
 
-puts "Refined judge on v2: #{passes}/#{Source.golden_questions.length}"
+puts "Refined judge on v2: #{passes}/#{Kb.golden_questions.length}"
