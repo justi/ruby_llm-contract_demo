@@ -70,15 +70,17 @@ RSpec.describe "Tribunal: off-the-shelf faithfulness gate" do
 
   # v2 - the "be warm" PR. Drifts into commercial promises.
   #
-  # IMPORTANT - what to expect when you run this:
-  #   Mixed outcomes are the point. Tribunal's catalog judge catches the
-  #   hard drift (case 5: "we'll find a flexible solution") but lets the
-  #   softer one through (case 1: "happy to assist with the return
-  #   process"). The custom judge in lib/faithfulness_judge_v2.rb is
-  #   tuned to flag both - calibration buys you the subtler call.
+  # What to expect when you run this:
+  #   Tribunal reliably flags loud commercial commitments ("we'll find a
+  #   flexible solution"). The verdict on softer warmth ("happy to assist",
+  #   "feel free to ask") varies run-to-run depending on how the v2 prompt
+  #   phrases its courtesy. The custom judge in lib/faithfulness_judge_v2.rb
+  #   flags both consistently because its prompt encodes the courtesy-vs-
+  #   commitment distinction; the catalog prompt does not. That swing is
+  #   the calibration gap - the point of this bonus spec.
   #
-  # The describe is tagged :drifted so default `bundle exec rspec` keeps
-  # the suite green. Run `--tag drifted` to see the real verdicts.
+  # Tagged :drifted so default `bundle exec rspec` keeps the suite green.
+  # Run `--tag drifted` to see the real verdicts:
   #
   #   LIVE=1 bundle exec rspec spec/tribunal_comparison_spec.rb --tag drifted
   describe "FaqStepV2Proposed (PR drift)", :drifted do
