@@ -144,6 +144,37 @@ Then:
 
 The other files (`faq_step.rb` v1, `faq_step_v2_proposed.rb`, `faithfulness_judge.rb` raw, all adversarial scripts, lifecycle scripts 01-10) are **teaching artifacts** - you don't need them in production. They exist so the demo can show the *path* to v4, not just hand v4 over.
 
+## Bonus: the same gate via `ruby_llm-tribunal`
+
+Reasonable question after reading scripts 01-10: *do I really need to write a custom judge if all I want is a faithfulness check?* The honest answer is **no** - if your check matches a category Tribunal already ships, you can call its built-in assertion in one line.
+
+[`ruby_llm-tribunal`](https://github.com/Alqemist-labs/ruby_llm-tribunal) is a sibling gem that ships an off-the-shelf catalog (`assert_faithful`, `refute_hallucination`, `assert_no_pii`, ...). See `spec/tribunal_comparison_spec.rb`:
+
+```ruby
+include RubyLLM::Tribunal::EvalHelpers
+
+it "case #{idx + 1}: #{question}" do
+  response = FaqStep.run(question).parsed_output[:answer]
+  assert_faithful response, context: [Kb.policy]
+end
+```
+
+That's the entire judge. `lib/faithfulness_judge_v2.rb` in this repo is ~100 LOC of prompt + schema + cross-check validate; the assertion above replaces it.
+
+**Catalog vs custom - what you trade:**
+
+| | Custom judge (this demo, scripts 01-10) | Tribunal `assert_faithful` |
+|---|---|---|
+| Judge LOC | ~100 (`faithfulness_judge_v2.rb`) | 0 (catalog ships it) |
+| Prompt control | full - you wrote the system prompt | none - baked in |
+| Domain calibration | iterative (script 02 -> 03 -> 04 teaches courtesy vs commitment) | still required, but you tune `threshold:`, not the prompt |
+| Output detail | per-claim breakdown (`supported`/`contradicted`/`unsupported`) | boolean pass/fail with score |
+| Best fit | the courtesy-vs-commitment distinction matters and you need to debug *which claim* drifted | the check is a generic faithfulness gate and you can live with score + verdict |
+
+**Caveat: Tribunal still needs calibration.** The default `threshold: 0.8` is domain-agnostic. The same courtesy-phrase trap that derails the raw custom judge in script 02 can derail Tribunal's default too - your gate may over-flag stylistic warmth, or under-flag a softly-worded commitment. The methodology in [`docs/guide/llm_judge.md`](https://github.com/justi/ruby_llm-contract/blob/main/docs/guide/llm_judge.md) (sample real production cases, label with a human, compare against the judge) applies to Tribunal exactly as it applies to your own judge.
+
+Bottom line: this demo teaches the methodology. Tribunal lets you skip the prompt-writing step once you understand it. If you reach for Tribunal first, read [`relation_to_tribunal.md`](https://github.com/justi/ruby_llm-contract/blob/main/docs/guide/relation_to_tribunal.md) for the decision tree.
+
 ## Why this isn't a strawman
 
 The drift pattern shown here (the model adds an out-of-policy commercial promise while the schema stays green) is documented:
