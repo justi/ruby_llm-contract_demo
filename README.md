@@ -129,7 +129,7 @@ The numbered `scripts/01..10` are tutorial chapters, not a single entry point. Y
 
 ## Adapting for your production app
 
-If you just want the **final pattern** in your own app, you don't need the v1/v2/v3 history or the raw judge. Copy the two final files:
+If you just want the **final pattern** in your own app, you don't need the v1/v2/v3 history or the raw judge. Copy the two final files - or, if your check matches a generic faithfulness gate, see the [Bonus section below](#bonus-the-same-gate-via-ruby_llm-tribunal) for a one-line catalog alternative via `ruby_llm-tribunal`.
 
 ```bash
 cp lib/faq_step_v4_iterated.rb       your_app/contracts/your_step.rb
@@ -166,14 +166,16 @@ That's the entire judge. `lib/faithfulness_judge_v2.rb` in this repo is ~100 LOC
 | | Custom judge (this demo, scripts 01-10) | Tribunal `assert_faithful` |
 |---|---|---|
 | Judge LOC | ~100 (`faithfulness_judge_v2.rb`) | 0 (catalog ships it) |
-| Prompt control | full - you wrote the system prompt | none - baked in |
-| Domain calibration | iterative (script 02 -> 03 -> 04 teaches courtesy vs commitment) | still required, but you tune `threshold:`, not the prompt |
-| Output detail | per-claim breakdown (`supported`/`contradicted`/`unsupported`) | boolean pass/fail with score |
-| Best fit | the courtesy-vs-commitment distinction matters and you need to debug *which claim* drifted | the check is a generic faithfulness gate and you can live with score + verdict |
+| Prompt control | full - you wrote the system prompt | none for `assert_faithful` itself; for a refined version you `register_judge` your own class |
+| Domain calibration | iterative prompt rewrite (script 02 → 03 → 04 teaches courtesy vs commitment) | tune `threshold:` for sensitivity; for new distinctions like courtesy-vs-commitment you cannot stay on the catalog - you register a custom judge |
+| Output detail | per-claim breakdown (`supported`/`contradicted`/`unsupported`) plus your own cross-check validate | pass/fail with score + natural-language reason listing supported vs unsupported claims; less structured than the per-claim schema |
+| Best fit | the courtesy-vs-commitment distinction matters and you need to debug *which claim* drifted | a generic faithfulness gate where score + reason is enough |
 
-**Caveat: Tribunal still needs calibration.** The default `threshold: 0.8` is domain-agnostic. The same courtesy-phrase trap that derails the raw custom judge in script 02 can derail Tribunal's default too - your gate may over-flag stylistic warmth, or under-flag a softly-worded commitment. The methodology in [`docs/guide/llm_judge.md`](https://github.com/justi/ruby_llm-contract/blob/main/docs/guide/llm_judge.md) (sample real production cases, label with a human, compare against the judge) applies to Tribunal exactly as it applies to your own judge.
+**Caveat: Tribunal still needs calibration on real data, BEFORE you read the comparison above as "just use the one-liner".** The default `threshold: 0.8` is domain-agnostic. The same courtesy-phrase trap that derails the raw custom judge in script 02 can derail Tribunal's default too - your gate may over-flag stylistic warmth, or under-flag a softly-worded commitment. The methodology in [`docs/guide/llm_judge.md`](https://github.com/justi/ruby_llm-contract/blob/main/docs/guide/llm_judge.md) (sample real production cases, label with a human, compare against the judge) applies to Tribunal exactly as it applies to your own judge.
 
-Bottom line: this demo teaches the methodology. Tribunal lets you skip the prompt-writing step once you understand it. If you reach for Tribunal first, read [`relation_to_tribunal.md`](https://github.com/justi/ruby_llm-contract/blob/main/docs/guide/relation_to_tribunal.md) for the decision tree.
+This is not theoretical for this demo. Run the bonus spec with `--tag drifted` and watch the score swing case-by-case: Tribunal reliably catches loud commercial commitments (*"we'll find a flexible solution"*), and the verdict on softer cases (*"happy to assist with the return process"*, *"feel free to ask"*) varies run-to-run depending on how the v2 prompt happens to phrase the warmth. The custom `FaithfulnessJudgeV2` flags both flavors consistently because its prompt encodes the courtesy-vs-commitment distinction; Tribunal's catalog prompt does not. That swing is the calibration gap, on the same five questions you have already seen.
+
+Bottom line: this demo teaches the methodology. Tribunal lets you skip the prompt-writing step once you understand it - not before. If you reach for Tribunal first, read [`relation_to_tribunal.md`](https://github.com/justi/ruby_llm-contract/blob/main/docs/guide/relation_to_tribunal.md) for the decision tree.
 
 ## Why this isn't a strawman
 

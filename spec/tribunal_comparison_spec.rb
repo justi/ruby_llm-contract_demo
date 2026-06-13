@@ -19,13 +19,23 @@
 #     ("Happy to help" = stylistic, supported; "we'll find a solution"
 #      = commercial promise, unsupported)
 #
-# Companion guide: docs/guide/llm_judge.md "When to reach for Tribunal"
-# + docs/guide/relation_to_tribunal.md in the gem repo.
+# Companion guides (in the ruby_llm-contract repo, not the Tribunal repo):
+# docs/guide/llm_judge.md "When to reach for Tribunal" +
+# docs/guide/relation_to_tribunal.md.
+#
+# Note on input fidelity: Tribunal's Faithful prompt templates a
+# `## Question` slot (lib/ruby_llm/tribunal/judges/faithful.rb in the
+# Tribunal gem source). This spec deliberately does NOT pass `query:`
+# because the custom judges in lib/faithfulness_judge*.rb only see
+# source + answer - sending the question to Tribunal would give the
+# catalog judge MORE context than the custom one, and break apples-to-
+# apples. Real Tribunal users should pass `query:` for RAG flows.
 #
 # ⚠️ Live OpenAI calls (Tribunal's judge is itself an LLM).
-# ⚠️ Tribunal's exact include path (RubyLLM::Tribunal::EvalHelpers) may
-#     differ across versions - check `gem which ruby_llm-tribunal` and
-#     the gem's README if RSpec reports an undefined `assert_faithful`.
+# ⚠️ Tribunal's stock default model is `anthropic:claude-3-5-haiku-latest`.
+#     The configure block below overrides it to `openai:gpt-4.1-mini` so
+#     this spec runs on the same OPENAI_API_KEY the rest of the demo uses.
+#     If you remove the override, export ANTHROPIC_API_KEY too.
 #
 # Run: LIVE=1 bundle exec rspec spec/tribunal_comparison_spec.rb
 
@@ -35,6 +45,13 @@ require "ruby_llm/tribunal"
 require "kb"
 require "faq_step"
 require "faq_step_v2_proposed"
+
+# Match the rest of the demo: OpenAI, gpt-4.1-mini, verbose so each
+# case prints the judge's score + verdict on the console.
+RubyLLM::Tribunal.configure do |c|
+  c.default_model = "openai:gpt-4.1-mini"
+  c.verbose       = true
+end
 
 RSpec.describe "Tribunal: off-the-shelf faithfulness gate" do
   include RubyLLM::Tribunal::EvalHelpers
@@ -52,15 +69,21 @@ RSpec.describe "Tribunal: off-the-shelf faithfulness gate" do
   end
 
   # v2 - the "be warm" PR. Drifts into commercial promises.
-  # Marked :drifted so the suite passes overall; remove the filter (or
-  # delete `pending`) to see Tribunal flag the regression without you
-  # having written a single line of judge code.
+  #
+  # IMPORTANT - what to expect when you run this:
+  #   Mixed outcomes are the point. Tribunal's catalog judge catches the
+  #   hard drift (case 5: "we'll find a flexible solution") but lets the
+  #   softer one through (case 1: "happy to assist with the return
+  #   process"). The custom judge in lib/faithfulness_judge_v2.rb is
+  #   tuned to flag both - calibration buys you the subtler call.
+  #
+  # The describe is tagged :drifted so default `bundle exec rspec` keeps
+  # the suite green. Run `--tag drifted` to see the real verdicts.
+  #
+  #   LIVE=1 bundle exec rspec spec/tribunal_comparison_spec.rb --tag drifted
   describe "FaqStepV2Proposed (PR drift)", :drifted do
     Kb.golden_questions.each_with_index do |question, idx|
       it "case #{idx + 1}: #{question}" do
-        pending "Demonstration: Tribunal's catalog judge flags the same " \
-                "drift the custom judge catches in 04_refined_judge.rb. " \
-                "Remove `pending` to see RSpec report the failure."
         response = FaqStepV2Proposed.run(question).parsed_output[:answer]
         assert_faithful response, context: context
       end

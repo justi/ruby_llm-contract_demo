@@ -67,6 +67,8 @@ GEM
       ruby_llm (~> 1.12)
       ruby_llm-schema (~> 0.3)
     ruby_llm-schema (0.4.0)
+    ruby_llm-tribunal (0.1.1)
+      ruby_llm (~> 1.0)
     uri (1.1.1)
     zeitwerk (2.8.2)
 
@@ -77,6 +79,7 @@ PLATFORMS
 DEPENDENCIES
   rspec (~> 3.13)
   ruby_llm-contract (~> 0.10.6)
+  ruby_llm-tribunal
 
 CHECKSUMS
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
@@ -105,6 +108,7 @@ CHECKSUMS
   ruby_llm (1.16.0) sha256=26bd5310cf2ce55f74a60f8aae0b0d0327b586ff4532c84828103c3b2b905a18
   ruby_llm-contract (0.10.6) sha256=092cb08693753b94a159d5cf2cc0f806af3680acf3ad002758d423e51a3109bb
   ruby_llm-schema (0.4.0) sha256=e930f5a5316f9301bff3fb7fe572e44727d05bb8e50621001bbb49a47d63b8da
+  ruby_llm-tribunal (0.1.1) sha256=9bebb408c92ac5c714ae68d7f048ef7467ac50d224e214aaaa25ef6210fc3102
   uri (1.1.1) sha256=379fa58d27ffb1387eaada68c749d1426738bd0f654d812fcc07e7568f5c57c6
   zeitwerk (2.8.2) sha256=7212a61311083c604184b1ea2574b9aa05cd14f855a0841c06985cabe9181d12
 
