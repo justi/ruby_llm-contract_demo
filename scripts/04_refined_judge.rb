@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 #
 # Same 5 questions as in 02, but graded by the refined judge (which
-# distinguishes stylistic courtesy from a commitment). Result: 3 PASS / 2 FAIL
-# — signal vs noise.
+# distinguishes stylistic courtesy from a commitment). Result varies run-to-run
+# (~2-3 of 5 PASS at temperature 0) - signal vs noise.
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"

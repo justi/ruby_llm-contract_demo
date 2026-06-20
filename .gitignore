@@ -7,4 +7,15 @@
 # Author-only files (not part of public demo)
 article.md
 article_plan.md
+article.html
+article_v2.md
+article_v2_plan.md
+article_v3.md
+SKILL_edit.md
 .claude/
+
+# Generated WordPress payloads + blog-publishing helpers (author-only)
+wp_content_*.html
+wp_title_*.txt
+output_*.txt
+scripts/render_wp_*.rb
