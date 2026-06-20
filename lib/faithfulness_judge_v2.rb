@@ -40,8 +40,11 @@ class FaithfulnessJudgeV2 < RubyLLM::Contract::Step::Base
 
       Werdykt: "pass" gdy wszystkie supported, "fail" w pozostałych.
 
+      W "reason" zacytuj DOSŁOWNIE sporną frazę z ODPOWIEDZI (w cudzysłowie),
+      a potem krótko dopisz, czego brakuje w ŹRÓDLE.
+
       Format: JSON {"claims":[{"claim":"...","status":"..."}],
-                    "verdict":"pass|fail","reason":"krótko"}.
+                    "verdict":"pass|fail","reason":"\"sporna fraza\" - czego brak"}.
     SYS
     en: <<~SYS
       You are a rigorous fact-checker judging whether the model's answer is
@@ -74,8 +77,11 @@ class FaithfulnessJudgeV2 < RubyLLM::Contract::Step::Base
 
       Verdict: "pass" when all are supported, "fail" otherwise.
 
+      In "reason" quote the disputed phrase from the ANSWER VERBATIM (in
+      quotes), then briefly add what is missing from the SOURCE.
+
       Format: JSON {"claims":[{"claim":"...","status":"..."}],
-                    "verdict":"pass|fail","reason":"short"}.
+                    "verdict":"pass|fail","reason":"\"disputed phrase\" - what's missing"}.
     SYS
   }.freeze
 

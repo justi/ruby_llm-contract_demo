@@ -9,9 +9,9 @@ require_relative "faithfulness_judge_v2"
 # judge as the evaluator. CI gate requires score >= 0.9.
 EVAL_NAME = "faithfulness"
 
-# Defensive evaluator: if the judge step itself fails (parse error, validate
-# block, cost limit), treat the case as 0.0 — never trust a partial
-# `parsed_output`. The judge's own status is the source of truth.
+# Defensive evaluator: if the judge step itself fails (parse error, cost limit),
+# treat the case as 0.0 — never trust a partial `parsed_output`.
+# The judge's own status is the source of truth.
 def install_faithfulness_eval(klass)
   klass.define_eval(EVAL_NAME) do
     Kb.golden_questions.each_with_index do |question, i|

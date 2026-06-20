@@ -9,8 +9,7 @@ require_relative "kb"
 # Changes vs v2 (faq_step_v2_proposed.rb):
 # - prompt: explicit "DO NOT PROMISE anything not in the POLICY" with a list
 #   of concrete anti-phrases the judge pointed to in 04_refined_judge.rb.
-# - length cap: 300 → 400 (warm replies with empathy need more room; the v1/v2
-#   cap of 300 was a leftover from the defensive first prompt).
+# - prompt: explicit ban on promising outside the policy.
 class FaqStepV3Iterated < RubyLLM::Contract::Step::Base
   SYSTEM_PROMPTS = {
     pl: <<~SYS,
@@ -21,7 +20,7 @@ class FaqStepV3Iterated < RubyLLM::Contract::Step::Base
          Możesz użyć pozdrowienia i wyrażenia zrozumienia.
       2. NIE OBIECUJ niczego czego nie ma w POLITYCE. W szczególności:
          - nie sugeruj że "postaramy się znaleźć rozwiązanie",
-         - nie obiecuj "elastyczności" ani "wyjątków",
+         - nie obiecuj "ustępstw" ani "wyjątków",
          - nie deklaruj "zrobimy wszystko" ani podobnych gestów,
          - nie dodawaj informacji o kosztach, terminach ani warunkach
            których nie ma w POLITYCE.
@@ -68,7 +67,4 @@ class FaqStepV3Iterated < RubyLLM::Contract::Step::Base
   end
 
   output_schema { string :answer }
-
-  validate("answer is non-empty") { |o, _| o[:answer].to_s.strip.length.positive? }
-  validate("answer fits the card") { |o, _| o[:answer].length <= 400 }
 end

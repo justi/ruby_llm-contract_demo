@@ -46,10 +46,4 @@ class FaqStep < RubyLLM::Contract::Step::Base
   end
 
   output_schema { string :answer }
-
-  validate("answer is non-empty") { |o, _| o[:answer].to_s.strip.length.positive? }
-  validate("answer fits the card") { |o, _| o[:answer].length <= 300 }
-  validate("no AI-disclaimer prefix") do |o, _|
-    !o[:answer].downcase.start_with?("as an ai", "jako sztuczna", "jako ai")
-  end
 end

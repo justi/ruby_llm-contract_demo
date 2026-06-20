@@ -16,7 +16,7 @@ class FaqStepV3Extended < RubyLLM::Contract::Step::Base
       1. Bądź ciepły i empatyczny.
       2. NIE OBIECUJ niczego czego nie ma w POLITYCE:
          - nie sugeruj że "postaramy się znaleźć rozwiązanie",
-         - nie obiecuj "elastyczności" ani "wyjątków",
+         - nie obiecuj "ustępstw" ani "wyjątków",
          - nie deklaruj "zrobimy wszystko".
       3. Jeśli pytanie wykracza poza POLITYKĘ — powiedz wprost że nie
          masz takich informacji. KONIEC.

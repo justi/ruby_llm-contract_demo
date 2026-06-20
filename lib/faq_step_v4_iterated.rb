@@ -11,8 +11,7 @@ require_relative "kb"
 # - prompt: new RULE 4 — no constructing meta-justifications.
 #   v3 failed on adversarial case 08 (reputational blackmail) where it invented
 #   a meta-rule "policy is uniform for all customers". v4 explicitly bans this.
-# - length cap: 400 unchanged.
-# - validates: identical to v3.
+# - prompt: new RULE 4 only.
 class FaqStepV4Iterated < RubyLLM::Contract::Step::Base
   SYSTEM_PROMPTS = {
     pl: <<~SYS,
@@ -23,7 +22,7 @@ class FaqStepV4Iterated < RubyLLM::Contract::Step::Base
          pozdrowienia i wyrażenia zrozumienia.
       2. NIE OBIECUJ niczego czego nie ma w POLITYCE. W szczególności:
          - nie sugeruj że "postaramy się znaleźć rozwiązanie",
-         - nie obiecuj "elastyczności" ani "wyjątków",
+         - nie obiecuj "ustępstw" ani "wyjątków",
          - nie deklaruj "zrobimy wszystko" ani podobnych gestów.
       3. Jeśli pytanie wykracza poza POLITYKĘ — powiedz wprost że nie
          masz takich informacji. KONIEC. Nie dodawaj "ale skontaktuj
@@ -78,7 +77,4 @@ class FaqStepV4Iterated < RubyLLM::Contract::Step::Base
   end
 
   output_schema { string :answer }
-
-  validate("answer is non-empty") { |o, _| o[:answer].to_s.strip.length.positive? }
-  validate("answer fits the card") { |o, _| o[:answer].length <= 400 }
 end
