@@ -28,10 +28,10 @@ All scripts make live OpenAI calls. `LIVE=1` is required to confirm. `DEMO_LANG=
 | `03_investigate.rb` | Per-claim breakdown: drift vs over-eager judge |
 | `04_refined_judge.rb` | v2 + refined judge → 2/5 (signal vs noise) |
 | `05_iterate.rb` | v3 prompt + refined judge → 5/5 PASS |
-| `06_adversarial_v1.rb` | v1 vs 4 adversarial archetypes → 4/4 PASS |
+| `06_adversarial_v1.rb` | v1 vs 4 adversarial archetypes → 3-4/4 (wobbles at temp 0) |
 | `07_adversarial_v2.rb` | v2 vs adversarial — validation_failed everywhere |
 | `08_adversarial_v3.rb` | v3 vs adversarial — 3/4, 1 meta-rule leak |
-| `09_iterate_v4.rb` | v4 (meta-rule ban) → 4/4 adversarial + 5/5 regression |
+| `09_iterate_v4.rb` | v4 (meta-rule ban) → 3/4 adversarial (blackmail still leaks a shorter meta-rule) + 5/5 regression |
 | `10_extended_policy.rb` | Alternative: extend source instead of iterating prompt |
 
 Scripts are independent — run any one in isolation.
