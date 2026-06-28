@@ -38,7 +38,7 @@ puts "Adversarial: #{adv_pass}/#{Adversarial.cases.length} PASS"
 puts ""
 
 puts "═" * 76
-puts "Part 2: regression control — reference questions"
+puts "Part 2: regression control - reference questions"
 puts "═" * 76
 puts ""
 
@@ -68,5 +68,5 @@ puts ""
 
 puts "═" * 76
 puts "Lesson: instead of iterating the prompt from v3 to v4, you can extend"
-puts "the source — same prompt, richer policy, better score."
+puts "the source - same prompt, richer policy, better score."
 puts "═" * 76

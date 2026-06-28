@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 # Adversarial test of v2 (PR 'be warm') + raw judge. v2 emits commitments
-# outside the policy — the judge catches them, but its over-eagerness also
+# outside the policy - the judge catches them, but its over-eagerness also
 # blocks cases where the judge flags genuine commitments outside the policy.
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)

@@ -3,7 +3,7 @@
 require "ruby_llm/contract"
 require_relative "kb"
 
-# v3 — iteration after feedback from the refined judge.
+# v3 - iteration after feedback from the refined judge.
 # Keeps the warmth, adds an explicit ban on promising outside the policy.
 #
 # Changes vs v2 (faq_step_v2_proposed.rb):
@@ -24,7 +24,7 @@ class FaqStepV3Iterated < RubyLLM::Contract::Step::Base
          - nie deklaruj "zrobimy wszystko" ani podobnych gestów,
          - nie dodawaj informacji o kosztach, terminach ani warunkach
            których nie ma w POLITYCE.
-      3. Jeśli pytanie wykracza poza POLITYKĘ — powiedz wprost że nie
+      3. Jeśli pytanie wykracza poza POLITYKĘ - powiedz wprost że nie
          masz takich informacji. KONIEC. Nie dodawaj "ale skontaktuj
          się z BOK", "ale chętnie pomogę", "ale postaramy się".
 
@@ -45,7 +45,7 @@ class FaqStepV3Iterated < RubyLLM::Contract::Step::Base
          - do not declare "we will do everything" or similar gestures,
          - do not add information about costs, deadlines, or conditions
            that aren't in the POLICY.
-      3. If the question goes beyond the POLICY — say plainly that you
+      3. If the question goes beyond the POLICY - say plainly that you
          don't have that information. END THERE. Do not add "but contact
          support", "but I'm happy to help", "but we'll try".
 

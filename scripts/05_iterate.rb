@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 # v3 gate (after prompt iteration) + refined judge + reference questions.
-# Expected score: 1.0 — gate cleared.
+# Expected score: 1.0 - gate cleared.
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"

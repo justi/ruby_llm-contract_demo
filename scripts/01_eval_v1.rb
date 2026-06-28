@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# v1 gate — production prompt + reference questions + refined judge.
+# v1 gate - production prompt + reference questions + refined judge.
 # Expected score: 1.0 (every answer faithful to the policy).
 #
 # Run: LIVE=1 OPENAI_API_KEY=sk-... bundle exec ruby scripts/01_eval_v1.rb

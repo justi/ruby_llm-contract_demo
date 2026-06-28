@@ -3,7 +3,7 @@
 require "ruby_llm/contract"
 require_relative "kb"
 
-# Judge v1 — raw version. Tags every claim as supported/contradicted/unsupported.
+# Judge v1 - raw version. Tags every claim as supported/contradicted/unsupported.
 # Does not distinguish stylistic courtesy from a commitment → over-strict.
 # Narrative starting point: the judge itself needs to be calibrated.
 # Dual-language prompts; respects DEMO_LANG just like Kb.
@@ -13,9 +13,9 @@ class FaithfulnessJudge < RubyLLM::Contract::Step::Base
       Jesteś rzetelnym fact-checkerem. Otrzymujesz ŹRÓDŁO i ODPOWIEDŹ.
       Rozłóż ODPOWIEDŹ na atomowe twierdzenia. Dla każdego twierdzenia
       oznacz:
-        - "supported"     — wynika ze ŹRÓDŁA
-        - "contradicted"  — ŹRÓDŁO mówi przeciwnie
-        - "unsupported"   — nie ma w ŹRÓDLE
+        - "supported"     - wynika ze ŹRÓDŁA
+        - "contradicted"  - ŹRÓDŁO mówi przeciwnie
+        - "unsupported"   - nie ma w ŹRÓDLE
 
       Werdykt: "pass" gdy wszystkie supported, "fail" w pozostałych
       przypadkach.
@@ -26,9 +26,9 @@ class FaithfulnessJudge < RubyLLM::Contract::Step::Base
     en: <<~SYS
       You are a rigorous fact-checker. You receive a SOURCE and an ANSWER.
       Break the ANSWER into atomic claims. For each claim, mark:
-        - "supported"     — follows from the SOURCE
-        - "contradicted"  — the SOURCE says the opposite
-        - "unsupported"   — not in the SOURCE
+        - "supported"     - follows from the SOURCE
+        - "contradicted"  - the SOURCE says the opposite
+        - "unsupported"   - not in the SOURCE
 
       Verdict: "pass" when all are supported, "fail" otherwise.
 

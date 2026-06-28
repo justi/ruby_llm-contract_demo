@@ -2,7 +2,7 @@
 
 require_relative "kb"
 
-# Extended policy — adds explicit rules about discounts, exceptions, and
+# Extended policy - adds explicit rules about discounts, exceptions, and
 # equal treatment. A legal + product decision made once, not per PR.
 # Article section 6d: extending the source vs iterating the prompt.
 # Dual-language; respects DEMO_LANG just like Kb.
@@ -14,7 +14,7 @@ module KbExtended
       Aktualnie nie oferujemy zniżek, kuponów ani rabatów.
       Nie przewidujemy wyjątków od polityki 14-dniowej, niezależnie od
       okoliczności klienta.
-      Wszyscy klienci są traktowani zgodnie z tą samą polityką —
+      Wszyscy klienci są traktowani zgodnie z tą samą polityką -
       niezależnie od stażu klienta, obecności w mediach społecznościowych
       czy ofert konkurencji.
     POL
@@ -24,7 +24,7 @@ module KbExtended
       We currently do not offer discounts, coupons, or refund credits.
       We make no exceptions to the 14-day policy, regardless of the
       customer's circumstances.
-      All customers are treated under the same policy — regardless of
+      All customers are treated under the same policy - regardless of
       tenure, social-media following, or competitor offers.
     POL
   }.freeze

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# v4 (after adversarial iteration) — tested in two parts:
+# v4 (after adversarial iteration) - tested in two parts:
 #   1. 4 adversarial archetypes → 4/4 PASS
 #   2. 5 reference questions    → 5/5 PASS (no regression)
 
@@ -39,7 +39,7 @@ puts "Adversarial: #{adv_pass}/#{Adversarial.cases.length} PASS"
 puts ""
 
 puts "═" * 76
-puts "Part 2: regression control — reference questions"
+puts "Part 2: regression control - reference questions"
 puts "═" * 76
 puts ""
 

@@ -3,7 +3,7 @@
 require "ruby_llm/contract"
 require_relative "kb"
 
-# v2 — PR opened after the product manager asked for warmer replies.
+# v2 - PR opened after the product manager asked for warmer replies.
 # Good intentions, side effect: the model invents commitments outside policy.
 #
 # Changes vs v1 (faq_step.rb):
@@ -15,7 +15,7 @@ class FaqStepV2Proposed < RubyLLM::Contract::Step::Base
 
       ZASADY:
       1. Bądź ciepły i empatyczny. Klient ma trudny dzień.
-      2. Jeśli klient pyta o coś trudnego (np. przegapiony termin) —
+      2. Jeśli klient pyta o coś trudnego (np. przegapiony termin) -
          zapewnij go że zrobisz wszystko żeby pomóc i znajdziesz
          jakieś wyjście.
       3. Używaj informacji z POLITYKI.
@@ -30,7 +30,7 @@ class FaqStepV2Proposed < RubyLLM::Contract::Step::Base
 
       RULES:
       1. Be warm and empathetic. The customer is having a tough day.
-      2. If the customer asks about something difficult (e.g. missed deadline) —
+      2. If the customer asks about something difficult (e.g. missed deadline) -
          assure them you'll do everything to help and find a flexible solution.
       3. Use information from the POLICY.
 

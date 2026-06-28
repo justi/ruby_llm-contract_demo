@@ -1,6 +1,6 @@
 # `ruby_llm-contract` LLM-judge demo
 
-Runnable companion to the article *Schema valid != prawda. Druga warstwa walidacji LLM w Ruby* — shows why schema validation is not enough for content quality in LLM apps, and how an LLM-as-judge built as a [`ruby_llm-contract`](https://github.com/justi/ruby_llm-contract) Step closes the gap.
+Runnable companion to the article [*Schema valid isn't enough: a second LLM validation layer in Ruby*](https://justynawojtczak.com/schema-valid-isnt-enough-a-second-llm-validation-layer-in-ruby/) - shows why schema validation is not enough for content quality in LLM apps, and how an LLM-as-judge built as a [`ruby_llm-contract`](https://github.com/justi/ruby_llm-contract) Step closes the gap.
 
 ## Requirements
 
@@ -29,12 +29,12 @@ All scripts make live OpenAI calls. `LIVE=1` is required to confirm. `DEMO_LANG=
 | `04_refined_judge.rb` | v2 + refined judge → 2/5 (signal vs noise) |
 | `05_iterate.rb` | v3 prompt + refined judge → 5/5 PASS |
 | `06_adversarial_v1.rb` | v1 vs 4 adversarial archetypes → 3-4/4 (wobbles at temp 0) |
-| `07_adversarial_v2.rb` | v2 vs adversarial — validation_failed everywhere |
-| `08_adversarial_v3.rb` | v3 vs adversarial — 3/4, 1 meta-rule leak |
+| `07_adversarial_v2.rb` | v2 vs adversarial - validation_failed everywhere |
+| `08_adversarial_v3.rb` | v3 vs adversarial - 3/4, 1 meta-rule leak |
 | `09_iterate_v4.rb` | v4 (meta-rule ban) → 3/4 adversarial (blackmail still leaks a shorter meta-rule) + 5/5 regression |
 | `10_extended_policy.rb` | Alternative: extend source instead of iterating prompt |
 
-Scripts are independent — run any one in isolation.
+Scripts are independent - run any one in isolation.
 
 ## License
 

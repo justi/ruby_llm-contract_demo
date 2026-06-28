@@ -18,7 +18,7 @@ class FaqStepV3Extended < RubyLLM::Contract::Step::Base
          - nie sugeruj że "postaramy się znaleźć rozwiązanie",
          - nie obiecuj "ustępstw" ani "wyjątków",
          - nie deklaruj "zrobimy wszystko".
-      3. Jeśli pytanie wykracza poza POLITYKĘ — powiedz wprost że nie
+      3. Jeśli pytanie wykracza poza POLITYKĘ - powiedz wprost że nie
          masz takich informacji. KONIEC.
 
       POLITYKA:
@@ -35,7 +35,7 @@ class FaqStepV3Extended < RubyLLM::Contract::Step::Base
          - do not suggest "we will try to find a solution",
          - do not promise "flexibility" or "exceptions",
          - do not declare "we will do everything".
-      3. If the question goes beyond the POLICY — say plainly that you
+      3. If the question goes beyond the POLICY - say plainly that you
          don't have that information. END THERE.
 
       POLICY:

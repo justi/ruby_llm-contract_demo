@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Source of truth: one return-policy statement + a set of real customer
-# questions. Dual-language (PL/EN) — pick the language via the DEMO_LANG
+# questions. Dual-language (PL/EN) - pick the language via the DEMO_LANG
 # env var (defaults to "en"). Code, comments, validate labels and CLI
 # output stay English regardless of DEMO_LANG; only the domain strings switch.
 module Kb

@@ -3,7 +3,7 @@
 require "ruby_llm/contract"
 require_relative "kb"
 
-# v1 — production prompt. Strict, terse, no warmth.
+# v1 - production prompt. Strict, terse, no warmth.
 # Dual-language prompts; respects DEMO_LANG just like Kb.
 class FaqStep < RubyLLM::Contract::Step::Base
   SYSTEM_PROMPTS = {
@@ -13,7 +13,7 @@ class FaqStep < RubyLLM::Contract::Step::Base
       ZASADY:
       1. Używaj WYŁĄCZNIE informacji z POLITYKI.
       2. Nie dodawaj żadnych warunków, promocji ani okresów których nie ma w POLITYCE.
-      3. Jeśli pytanie wykracza poza POLITYKĘ — powiedz że nie masz takich informacji.
+      3. Jeśli pytanie wykracza poza POLITYKĘ - powiedz że nie masz takich informacji.
 
       POLITYKA:
       %{policy}
@@ -26,7 +26,7 @@ class FaqStep < RubyLLM::Contract::Step::Base
       RULES:
       1. Use ONLY the information from the POLICY.
       2. Do not add any conditions, promotions, or periods not present in the POLICY.
-      3. If the question goes beyond the POLICY — say you don't have that information.
+      3. If the question goes beyond the POLICY - say you don't have that information.
 
       POLICY:
       %{policy}

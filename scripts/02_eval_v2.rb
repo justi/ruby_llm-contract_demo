@@ -38,4 +38,4 @@ end
 puts ""
 puts "Score: #{report.score}  Verdict: #{report.passed? ? 'PASS' : 'FAIL'}"
 puts ""
-puts "When score < 0.9 — the CI gate blocks the PR merge."
+puts "When score < 0.9 - the CI gate blocks the PR merge."

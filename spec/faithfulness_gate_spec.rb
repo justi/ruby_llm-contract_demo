@@ -13,12 +13,12 @@ require "ruby_llm/contract/rspec"
 require "evals"
 
 RSpec.describe "faithfulness gate" do
-  # The production class — this is what CI gates on every PR.
+  # The production class - this is what CI gates on every PR.
   it "FaqStep (production v1) passes the gate" do
     expect(FaqStep).to pass_eval("faithfulness").with_minimum_score(0.9)
   end
 
-  # The proposed change — demonstrates the gate blocking a regression.
+  # The proposed change - demonstrates the gate blocking a regression.
   # Marked `pending` so the suite passes overall; remove `pending` to see
   # the gate fire on the drifted prompt.
   it "FaqStepV2Proposed (PR drift) FAILS the gate", :drifted do

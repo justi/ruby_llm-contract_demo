@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 # Adversarial test of v1 (production prompt) + refined judge.
-# v1 is legally safe (4/4 PASS), but it sounds like an FAQ — hence the
+# v1 is legally safe (4/4 PASS), but it sounds like an FAQ - hence the
 # pressure for the "be warm" PR.
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)

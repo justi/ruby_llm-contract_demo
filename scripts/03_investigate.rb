@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 # Per-case analysis of the raw judge against v2 answers.
-# Shows why the judge flags politeness as drift — and which flags are
+# Shows why the judge flags politeness as drift - and which flags are
 # legitimate (a commitment outside the policy).
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)

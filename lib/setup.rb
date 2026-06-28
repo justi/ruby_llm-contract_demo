@@ -19,7 +19,7 @@ if File.exist?(env_path)
   end
 end
 
-# LIVE=1 guard — protects adopter from surprise billing.
+# LIVE=1 guard - protects adopter from surprise billing.
 unless ENV["LIVE"] == "1"
   warn <<~MSG
 

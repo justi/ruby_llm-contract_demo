@@ -49,6 +49,6 @@ end
 puts "═" * 76
 puts "v3 + refined judge: #{passes}/#{Adversarial.cases.length}"
 puts ""
-puts "Adversarial tests revealed another drift mode. The pipeline is continuous —"
+puts "Adversarial tests revealed another drift mode. The pipeline is continuous -"
 puts "iterate the prompt to v4 or extend the source of truth."
 puts "═" * 76
