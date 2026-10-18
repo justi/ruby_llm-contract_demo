@@ -37,11 +37,28 @@
 #     this spec runs on the same OPENAI_API_KEY the rest of the demo uses.
 #     If you remove the override, export ANTHROPIC_API_KEY too.
 #
+# ⚠️ Needs ruby_llm-tribunal, which requires ruby_llm 1.x (0.1.1: ruby_llm
+#     ~> 1.0). This demo runs ruby_llm-contract 1.x on ruby_llm 2.x, so the
+#     gem is not in the Gemfile and this spec skips itself. To run it, use
+#     ruby_llm-contract "~> 0.10.6" and add gem "ruby_llm-tribunal" (see the
+#     Gemfile).
+#
 # Run: LIVE=1 bundle exec rspec spec/tribunal_comparison_spec.rb
+
+begin
+  require "ruby_llm/tribunal"
+rescue LoadError
+  RSpec.describe "Tribunal: off-the-shelf faithfulness gate" do
+    it "needs ruby_llm-tribunal" do
+      skip "ruby_llm-tribunal requires ruby_llm 1.x; this demo runs on ruby_llm 2.x " \
+           "(see the note at the top of this file)"
+    end
+  end
+  return
+end
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "setup"
-require "ruby_llm/tribunal"
 require "kb"
 require "faq_step"
 require "faq_step_v2_proposed"
